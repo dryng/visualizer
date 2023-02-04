@@ -1,3 +1,5 @@
+import { createSlice } from "@reduxjs/toolkit";
+
 const NUM_ROWS = 10;
 const NUM_COLS = 10;
 
@@ -18,19 +20,18 @@ function createGrid(rows, cols) {
     return grid;
 }
 
-const initialState = {
-    grid: createGrid(NUM_COLS, NUM_ROWS)
-}
+const initialState = createGrid(NUM_COLS, NUM_ROWS)
 // createSlice uses "immer" which lets us write "immutbale" code, but its really just making a copy
 const gridSlice = createSlice({
     name: 'grid',
+    initialState,
     reducers: {
         nodeVisited: {
             // prepare sends to reducer
             // can call nodeVisited(x,y)
             reducer(state, action) {
                 const { x, y } = action.payload;
-                state.grid[x][y].visited = true;
+                state[x][y].visited = true;
             },
             prepare(x, y) {
                 return {
@@ -40,30 +41,32 @@ const gridSlice = createSlice({
         },
         nodeStart: {
             reducer(state, action) {
-                const { x, y } = action.payload;
-                state.grid[x][y].start = true;
+                // set => True or False.
+                // whether setting or unsetting
+                const { x, y, set } = action.payload;
+                state[x][y].start = set;
             },
-            prepare(x, y) {
+            prepare(x, y, set) {
                 return {
-                    payload: {x, y}
+                    payload: {x, y, set}
                 }
             }
         },
         nodeEnd: {
             reducer(state, action) {
-                const { x, y } = action.payload;
-                state.grid[x][y].end = true;
+                const { x, y, set } = action.payload;
+                state[x][y].end = set;
             },
-            prepare(x, y) {
+            prepare(x, y, set) {
                 return {
-                    payload: {x, y}
+                    payload: {x, y, set}
                 }
             }
         },
         nodeWeight: {
             reducer(state, action) {
                 const { x, y } = action.payload;
-                state.grid[x][y].end = true;
+                state[x][y].end = true;
             },
             prepare(x, y, weight) {
                 return {

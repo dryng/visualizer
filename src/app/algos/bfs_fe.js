@@ -1,5 +1,5 @@
 // BFS algo
-import { nodeVisited } from "@/redux/features/grid/gridSlice";
+import { nodeVisited } from "src/redux/features/grid/gridSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 /* if I uncomment this (NOT EVEN CALLING), bfs never finishes?? js is broken

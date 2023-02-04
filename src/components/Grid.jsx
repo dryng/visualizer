@@ -1,16 +1,36 @@
-import { nodeEnd, nodeStart, nodeVisited } from "@/redux/features/grid/gridSlice";
+import {
+    nodeEnd,
+    nodeStart,
+    nodeVisited,
+} from "src/redux/features/grid/gridSlice";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Node from "./Node";
-import { getStartNode, getEndNode, bfs } from "@/algos/bfs";
 
-export default function Grid() {
+export default function Grid(props) {
     // useState to let user click on node to be start and end. Only stores in redux when the
     // user clicks "run". This way can change start and end. End can only be set once start has been.
     // jk do it in redux so the node knows what color to be
 
     const grid = useSelector((state) => state.grid);
     const dispatch = useDispatch();
+
+    const getStartNode = (grid) => {
+        for (let row of grid) {
+            for (let node of row) {
+                if (node.start) return node;
+            }
+        }
+    };
+
+    const getEndNode = (grid) => {
+        // get the end node
+        for (let row of grid) {
+            for (let node of row) {
+                if (node.end) return node;
+            }
+        }
+    };
 
     // check if a start node has been set yet
     const startNodeSet = () => {
@@ -57,17 +77,17 @@ export default function Grid() {
         }
         let startNode = getStartNode(grid);
         let endNode = getEndNode(grid);
-        console.log("START NODE", startNode); 
-        console.log("END NODE", endNode); 
+        console.log("START NODE", startNode);
+        console.log("END NODE", endNode);
         console.log("grid bfore", grid);
 
         if (startNode !== null && endNode != null) {
-            bfs(grid, dispatch);
+            //bfs(grid, dispatch);
         }
     };
 
-    const renderedNodes = grid.map((row, x) =>
-        row.map((node, y) => {
+    const renderedNodes = grid.map((row, x) => {
+        let rowArr = row.map((node, y) => {
             return (
                 <Node
                     key={node.id}
@@ -76,8 +96,18 @@ export default function Grid() {
                     clickHandler={nodeClickHandler}
                 ></Node>
             );
-        })
-    );
+        });
+        rowArr.push(<br key={row}/>);
+        return rowArr;
+    });
 
     return <ul>{renderedNodes}</ul>;
+    /*    return (
+        <div>
+            <ul>{renderedNodes}</ul>
+            <button onClick={() => props.algoHandler(grid)}>
+                Run: {props.algoName}
+            </button>
+        </div>
+    ); */
 }

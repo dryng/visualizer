@@ -26,6 +26,9 @@ const initialState = {
     endNode: null
 }
 
+// this is broken. can't index x y into grid because the elements
+// at x, y are different than then index
+
 // createSlice uses "immer" which lets us write "immutbale" code, but its really just making a copy
 const gridSlice = createSlice({
     name: 'grid',
@@ -39,6 +42,8 @@ const gridSlice = createSlice({
                 state.grid[x][y].visited = true;
             },
             prepare(x, y) {
+                // x = NUM_ROWS - x - 1; // need to remap because passing index of arrays. nodeStart and end get the right ones from node comp
+                // not good lol
                 return {
                     payload: {x, y}
                 }
@@ -50,6 +55,11 @@ const gridSlice = createSlice({
                 // whether setting or unsetting
                 const { x, y, set } = action.payload;
                 state.grid[x][y].start = set;
+                if (set) {
+                    state.startNode = state.grid[x][y];
+                } else {
+                    state.startNode = null;
+                }
             },
             prepare(x, y, set) {
                 return {
@@ -61,6 +71,11 @@ const gridSlice = createSlice({
             reducer(state, action) {
                 const { x, y, set } = action.payload;
                 state.grid[x][y].end = set;
+                if (set) {
+                    state.endNode = state.grid[x][y];
+                } else {
+                    state.endNode = null;
+                }
             },
             prepare(x, y, set) {
                 return {
@@ -78,9 +93,14 @@ const gridSlice = createSlice({
                     payload: {x, y, weight}
                 }
             }
+        },
+        clearAllVisited: {
+            reducer(state, action) {
+                state.grid.map(row => row.map(node => node.visited = false));
+            }
         }
     } 
 })
 
-export const { nodeVisited, nodeStart, nodeEnd, nodeWeight } = gridSlice.actions;
+export const { nodeVisited, nodeStart, nodeEnd, nodeWeight, clearAllVisited } = gridSlice.actions;
 export default gridSlice.reducer;

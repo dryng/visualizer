@@ -13,56 +13,17 @@ export default function Grid(props) {
     // jk do it in redux so the node knows what color to be
 
     const grid = useSelector((state) => state.grid.grid);
+    const startNode = useSelector((state) => state.grid.startNode);
+    const endNode = useSelector((state) => state.grid.endNode);
     const dispatch = useDispatch();
-
-    const getStartNode = (grid) => {
-        for (let row of grid) {
-            for (let node of row) {
-                if (node.start) return node;
-            }
-        }
-    };
-
-    const getEndNode = (grid) => {
-        // get the end node
-        for (let row of grid) {
-            for (let node of row) {
-                if (node.end) return node;
-            }
-        }
-    };
-
-    // check if a start node has been set yet
-    const startNodeSet = () => {
-        for (let row of grid) {
-            for (let node of row) {
-                if (node.start) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    };
-
-    // check if an end node has been set yet
-    const endNodeSet = () => {
-        for (let row of grid) {
-            for (let node of row) {
-                if (node.end) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    };
 
     const nodeClickHandler = (e, coords) => {
         const [x, y] = coords;
         console.log("CLICKED COORDS", coords);
-        // click
-        if (!startNodeSet() && !grid[x][y].end) {
+
+        if (!startNode && !grid[x][y].end) {
             dispatch(nodeStart(x, y, true));
-        } else if (!endNodeSet() && !grid[x][y].start) {
+        } else if (!endNode && !grid[x][y].start) {
             if (grid[x][y].start) {
                 dispatch(nodeStart(x, y, false));
             } else {
@@ -76,19 +37,14 @@ export default function Grid(props) {
                 dispatch(nodeEnd(x, y, false));
             }
         }
-        let startNode = getStartNode(grid);
-        let endNode = getEndNode(grid);
+
         console.log("START NODE", startNode);
         console.log("END NODE", endNode);
         console.log("grid bfore", grid);
-
-        if (startNode !== null && endNode != null) {
-            //bfs(grid, dispatch);
-        }
     };
 
-    const renderedNodes = grid.map((row, x) => {
-        let rowArr = row.map((node, y) => {
+    const renderedNodes = grid.map((row) => {
+        let rowArr = row.map((node) => {
             return (
                 <Node
                     key={node.id}

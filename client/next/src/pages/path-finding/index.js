@@ -10,7 +10,8 @@ function sleep(ms) {
 
 export default function PathFindingPage() {
     
-    const grid = useSelector((state) => state.grid);
+    const grid = useSelector((state) => state.grid.grid);
+
     const dispatch = useDispatch();
 
     async function algoCaller(algo) {

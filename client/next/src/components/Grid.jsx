@@ -12,7 +12,7 @@ export default function Grid(props) {
     // user clicks "run". This way can change start and end. End can only be set once start has been.
     // jk do it in redux so the node knows what color to be
 
-    const grid = useSelector((state) => state.grid);
+    const grid = useSelector((state) => state.grid.grid);
     const dispatch = useDispatch();
 
     const getStartNode = (grid) => {

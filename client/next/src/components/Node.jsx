@@ -3,13 +3,12 @@ import { useSelector } from "react-redux";
 
 const BOX_SIZE = 6;
 
-export default function Node(props) {
+export default function Node(props) {       
     const [hovered, setHovered] = useState(false);
     //const bg_color = props.visited ? "bg-blue-400" : "bg-gray-200";
     const border_color = hovered ? "bg-blue-400" : "border-gray-700";
-    const [x, y] = props.coords
-
-    const nodeState = useSelector((state) => state.grid[x][y]);
+    const [x, y] = props.coords;
+    const nodeState = useSelector((state) => state.grid.grid[x][y]);
 
     let bgColor = "bg-gray-200";
     if (nodeState.start) {

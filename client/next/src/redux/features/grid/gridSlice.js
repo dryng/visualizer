@@ -20,7 +20,11 @@ function createGrid(rows, cols) {
     return grid;
 }
 
-const initialState = createGrid(NUM_COLS, NUM_ROWS)
+const initialState = {
+    grid: createGrid(NUM_COLS, NUM_ROWS),
+    startNode: null,
+    endNode: null
+}
 
 // createSlice uses "immer" which lets us write "immutbale" code, but its really just making a copy
 const gridSlice = createSlice({
@@ -32,7 +36,7 @@ const gridSlice = createSlice({
             // can call nodeVisited(x,y)
             reducer(state, action) {
                 const { x, y } = action.payload;
-                state[x][y].visited = true;
+                state.grid[x][y].visited = true;
             },
             prepare(x, y) {
                 return {
@@ -45,7 +49,7 @@ const gridSlice = createSlice({
                 // set => True or False.
                 // whether setting or unsetting
                 const { x, y, set } = action.payload;
-                state[x][y].start = set;
+                state.grid[x][y].start = set;
             },
             prepare(x, y, set) {
                 return {
@@ -56,7 +60,7 @@ const gridSlice = createSlice({
         nodeEnd: {
             reducer(state, action) {
                 const { x, y, set } = action.payload;
-                state[x][y].end = set;
+                state.grid[x][y].end = set;
             },
             prepare(x, y, set) {
                 return {
@@ -67,7 +71,7 @@ const gridSlice = createSlice({
         nodeWeight: {
             reducer(state, action) {
                 const { x, y } = action.payload;
-                state[x][y].end = true;
+                state.grid[x][y].end = true;
             },
             prepare(x, y, weight) {
                 return {

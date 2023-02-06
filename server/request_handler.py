@@ -20,18 +20,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 class Node(BaseModel):
     id: int
     x: int
-    y: int 
+    y: int
+    start: bool
+    end: bool
+    wall: bool
     weight: int
     visited: bool
-    start: bool 
-    end: bool
+
 
 class Grid(BaseModel):
     data: List[List[Node]]
-    
+
+
 @app.get("/")
 def root():
     return {"message": "hello world"}
@@ -39,11 +43,12 @@ def root():
 
 @app.post("/bfs")
 def bfs_handler(grid: Grid):
+    print("hitting bfs") 
     nodesVisited = bfs(grid.data)
-    return {"nodesVisited" : nodesVisited}
+    return {"nodesVisited": nodesVisited}
 
 
 @app.post("/dfs")
 def bfs_handler(grid: Grid):
     nodesVisited = dfs(grid.data)
-    return {"nodesVisited" : nodesVisited}
+    return {"nodesVisited": nodesVisited}

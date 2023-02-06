@@ -9,10 +9,17 @@ function createGrid(rows, cols) {
     let count = 0;
     for (let r = 0; r < rows; r++) {
         let row = [];
-        for (let c = 0; c < cols; c ++) {
-            row.push(
-                {id: count, x: (r), y: (c), weight: 1, visited: false, start: false, end: false}
-            );
+        for (let c = 0; c < cols; c++) {
+            row.push({
+                id: count,
+                x: r,
+                y: c,
+                start: false,
+                end: false,
+                wall: false,
+                weight: 1,
+                visited: false,
+            });
             count += 1;
         }
         grid.push(row);
@@ -23,15 +30,15 @@ function createGrid(rows, cols) {
 const initialState = {
     grid: createGrid(NUM_COLS, NUM_ROWS),
     startNode: null,
-    endNode: null
-}
+    endNode: null,
+};
 
 // this is broken. can't index x y into grid because the elements
 // at x, y are different than then index
 
 // createSlice uses "immer" which lets us write "immutbale" code, but its really just making a copy
 const gridSlice = createSlice({
-    name: 'grid',
+    name: "grid",
     initialState,
     reducers: {
         nodeVisited: {
@@ -45,9 +52,9 @@ const gridSlice = createSlice({
                 // x = NUM_ROWS - x - 1; // need to remap because passing index of arrays. nodeStart and end get the right ones from node comp
                 // not good lol
                 return {
-                    payload: {x, y}
-                }
-            }
+                    payload: { x, y },
+                };
+            },
         },
         nodeStart: {
             reducer(state, action) {
@@ -63,9 +70,9 @@ const gridSlice = createSlice({
             },
             prepare(x, y, set) {
                 return {
-                    payload: {x, y, set}
-                }
-            }
+                    payload: { x, y, set },
+                };
+            },
         },
         nodeEnd: {
             reducer(state, action) {
@@ -79,9 +86,9 @@ const gridSlice = createSlice({
             },
             prepare(x, y, set) {
                 return {
-                    payload: {x, y, set}
-                }
-            }
+                    payload: { x, y, set },
+                };
+            },
         },
         nodeWeight: {
             reducer(state, action) {
@@ -90,17 +97,31 @@ const gridSlice = createSlice({
             },
             prepare(x, y, weight) {
                 return {
-                    payload: {x, y, weight}
-                }
-            }
+                    payload: { x, y, weight },
+                };
+            },
+        },
+        nodeWall: {
+            reducer(state, action) {
+                const { x, y } = action.payload;
+                state.grid[x][y].wall = true;
+            },
+            prepare(x, y) {
+                return {
+                    payload: { x, y },
+                };
+            },
         },
         clearAllVisited: {
             reducer(state, action) {
-                state.grid.map(row => row.map(node => node.visited = false));
-            }
-        }
-    } 
-})
+                state.grid.map((row) =>
+                    row.map((node) => (node.visited = false))
+                );
+            },
+        },
+    },
+});
 
-export const { nodeVisited, nodeStart, nodeEnd, nodeWeight, clearAllVisited } = gridSlice.actions;
+export const { nodeVisited, nodeStart, nodeEnd, nodeWeight, nodeWall, clearAllVisited } =
+    gridSlice.actions;
 export default gridSlice.reducer;

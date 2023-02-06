@@ -4,9 +4,6 @@ import { useSelector } from "react-redux";
 const BOX_SIZE = 6;
 
 export default function Node(props) {       
-    const [hovered, setHovered] = useState(false);
-    //const bg_color = props.visited ? "bg-blue-400" : "bg-gray-200";
-    const border_color = hovered ? "bg-blue-400" : "border-gray-700";
     const [x, y] = props.coords;
     const nodeState = useSelector((state) => state.grid.grid[x][y]);
 
@@ -17,16 +14,19 @@ export default function Node(props) {
         bgColor = "bg-red-600"
     } else if (nodeState.visited) {
         bgColor = "bg-blue-600"
+    } else if (nodeState.wall) {
+        bgColor = "bg-gray-600" 
     }
 
-    function changeBackground() {
-        setHovered(!hovered);
-    }
+    const border_color = nodeState.visited ? "border-blue-600" : "border-gray-600";
 
     return (
         <div
             className={`h-${BOX_SIZE} w-${BOX_SIZE} ${bgColor} border-2 ${border_color} rounded-xl inline-block px-1.5 mx-0.5 py-1.5`}
             onClick={(e) => props.clickHandler(e, props.coords)}
+            onMouseDown={props.onMouseDown}
+            onMouseUp={props.onMouseUp}
+            onMouseEnter={(e) => props.onMouseEnter(e, props.coords)}
         >
             <p className="text-red-500">{x}, {y}</p>
         </div>

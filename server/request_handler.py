@@ -33,7 +33,9 @@ class Node(BaseModel):
 
 
 class Grid(BaseModel):
-    data: List[List[Node]]
+    grid: List[List[Node]]
+    start_node: Node
+    end_node: Node
 
 
 @app.get("/")
@@ -44,11 +46,11 @@ def root():
 @app.post("/bfs")
 def bfs_handler(grid: Grid):
     print("hitting bfs") 
-    nodesVisited = bfs(grid.data)
+    nodesVisited = bfs(grid.grid, grid.start_node, grid.end_node)
     return {"nodesVisited": nodesVisited}
 
 
 @app.post("/dfs")
 def bfs_handler(grid: Grid):
-    nodesVisited = dfs(grid.data)
+    nodesVisited = dfs(grid.grid, grid.start_node, grid.end_node)
     return {"nodesVisited": nodesVisited}

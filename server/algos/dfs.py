@@ -1,20 +1,6 @@
-def get_start_node(grid):
-    for row in grid:
-        for node in row:
-            if node.start:
-                return [node.x, node.y]
-
-
-def get_end_node(grid):
-    for row in grid:
-        for node in row:
-            if node.end:
-                return [node.x, node.y]
-
-
-def dfs(grid):
-    start_node_coords = get_start_node(grid)
-    end_node_coords = get_end_node(grid)
+def dfs(grid, start_node, end_node):
+    start_node_coords = [start_node.x, start_node.y]
+    end_node_coords = [end_node.x, end_node.y]
     visited = []
 
     def runner(x, y):

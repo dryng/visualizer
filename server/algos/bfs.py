@@ -10,7 +10,7 @@ def bfs(grid, start_node, end_node):
         if [x, y] == end_node_coords:
             return visited
 
-        if [x, y] not in visited:
+        if [x, y] not in visited and not grid[x][y].wall:
             visited.append([x, y])
             for dir in dirs:
                 change_x, change_y = dir
@@ -18,3 +18,4 @@ def bfs(grid, start_node, end_node):
                 if (next_x >= 0 and next_x < len(grid)
                         and next_y >= 0 and next_y < len(grid[0])):
                     queue.append([next_x, next_y])
+    return visited

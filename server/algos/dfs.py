@@ -10,7 +10,7 @@ def dfs(grid, start_node, end_node):
 
         if (x >= 0 and x < len(grid)
             and y >= 0 and y < len(grid[0])
-                and [x, y] not in visited):
+                and [x, y] not in visited and not grid[x][y].wall):
             visited.append([x, y])
             return (runner(x + 1, y) or
                     runner(x - 1, y) or

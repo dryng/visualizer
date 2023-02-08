@@ -119,9 +119,16 @@ const gridSlice = createSlice({
                 );
             },
         },
+        clearWall: {
+            reducer(state, action) {
+                state.grid.map((row) =>
+                    row.map((node) => (node.wall = false))
+                );
+            },
+        },
     },
 });
 
-export const { nodeVisited, nodeStart, nodeEnd, nodeWeight, nodeWall, clearAllVisited } =
+export const { nodeVisited, nodeStart, nodeEnd, nodeWeight, nodeWall, clearAllVisited, clearWall } =
     gridSlice.actions;
 export default gridSlice.reducer;

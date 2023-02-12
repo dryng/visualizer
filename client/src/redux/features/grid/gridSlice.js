@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const NUM_ROWS = 10;
+const NUM_ROWS = 20;
 const NUM_COLS = 10;
 
 function createGrid(rows, cols) {

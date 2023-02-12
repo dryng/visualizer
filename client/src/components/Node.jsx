@@ -22,13 +22,14 @@ export default function Node(props) {
 
     return (
         <div
-            className={`h-${BOX_SIZE} w-${BOX_SIZE} ${bgColor} border-2 ${border_color} rounded-xl inline-block px-1.5 mx-0.5 py-1.5`}
+            className={`h-${BOX_SIZE} w-${BOX_SIZE} ${bgColor} border-2 ${border_color} rounded-xl inline-block px-2.5 mx-0.5 py-1.5`}
             onClick={(e) => props.clickHandler(e, props.coords)}
             onMouseDown={props.onMouseDown}
             onMouseUp={props.onMouseUp}
             onMouseEnter={(e) => props.onMouseEnter(e, props.coords)}
         >
-            <p className="text-red-500">{x}, {y}</p>
+            <p className="text-red-500">x</p>
+            <p>   </p>
         </div>
     );
 }
